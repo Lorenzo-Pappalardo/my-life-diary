@@ -14,7 +14,8 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"prisma:db:push": "prisma db push",
-		"prisma:migrate:dev": "prisma migrate dev"
+		"prisma:migrate:dev": "prisma migrate dev",
+		"prisma:generate": "prisma generate"
 	},
 	"dependencies": {
 		"@prisma/client": "^6.17.1"
