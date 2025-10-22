@@ -10,8 +10,8 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<header class="mx-4 my-2 font-bold">
-	<Button href="/" variant="link" class="text-4xl">My life</Button>
+<header class="p-0 pb-4">
+	<Button href="/" variant="link" class="text-4xl p-0">My life</Button>
 </header>
 
 {@render children?.()}

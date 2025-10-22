@@ -1,17 +1,15 @@
 <script lang="ts">
-	import type { PageProps } from './$types';
+	import { columns, type DisplayedEvent } from './columns.js';
+	import DataTable from './data-table.svelte';
 
-	const { data }: PageProps = $props();
+	const { data } = $props();
+
+	const displayedEvents = data.events.map<DisplayedEvent>((event) => ({
+		title: event.title,
+		context: event.context,
+		date: event.endDate !== null ? `${event.startDate} - ${event.endDate}` : `${event.startDate}`,
+		impact: event.impact ? 'Positive' : 'Negative'
+	}));
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
-
-{#each data.events as event}
-	<h2>{event.title}</h2>
-	<p>{event.description}</p>
-	<p>Context: {event.context}</p>
-	<p>Start Date: {event.startDate}</p>
-	<p>End Date: {event.endDate}</p>
-	<p>Impact: {event.impact ? 'High' : 'Low'}</p>
-{/each}
+<DataTable data={displayedEvents} {columns} />
