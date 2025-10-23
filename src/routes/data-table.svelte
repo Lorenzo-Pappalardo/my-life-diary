@@ -1,9 +1,9 @@
 <script lang="ts" generics="TData, TValue">
-	import { type ColumnDef, getCoreRowModel } from '@tanstack/table-core';
 	import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table/index';
 	import * as Table from '$lib/components/ui/table/index';
+	import { type ColumnDef, getCoreRowModel, getFilteredRowModel, getSortedRowModel } from '@tanstack/table-core';
 
-	let {
+	const {
 		columns,
 		data
 	}: {
@@ -12,11 +12,19 @@
 	} = $props();
 
 	const table = createSvelteTable({
-		get data() {
-			return data;
-		},
+		data,
 		columns,
-		getCoreRowModel: getCoreRowModel()
+		getCoreRowModel: getCoreRowModel(),
+		getFilteredRowModel: getFilteredRowModel(),
+		getSortedRowModel: getSortedRowModel(),
+		initialState: {
+			sorting: [
+				{
+					id: 'period',
+					desc: true
+				}
+			]
+		}
 	});
 </script>
 

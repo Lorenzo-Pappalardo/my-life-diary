@@ -4,15 +4,20 @@ import type { Event } from '../generated/prisma/browser';
 export const columns: ColumnDef<DisplayedEvent>[] = [
 	{
 		accessorKey: 'title',
-		header: 'Title'
+		header: 'Title',
+		filterFn: 'includesString',
+		sortingFn: 'text'
 	},
 	{
 		accessorKey: 'context',
-		header: 'Context'
+		header: 'Context',
+		filterFn: 'equalsString',
+		sortingFn: 'text'
 	},
 	{
+		accessorKey: 'period',
 		header: 'Period',
-		accessorFn: row => row.period.start.getTime(),
+		accessorFn: row => row.period.start,
 		cell: cell => {
 			const formatter = new Intl.DateTimeFormat(undefined, {
 				year: 'numeric',
@@ -27,12 +32,19 @@ export const columns: ColumnDef<DisplayedEvent>[] = [
 			if (endDate !== null) formatted += ` - ${formatter.format(endDate)}`;
 
 			return formatted;
-		}
+		},
+		filterFn: 'equals',
+		sortingFn: 'datetime'
 	},
 	{
 		accessorKey: 'impact',
 		header: 'Impact',
-		cell: cell => (cell.getValue<DisplayedEvent['impact']>() ? 'Positive' : 'Negative')
+		cell: cell => (cell.getValue<DisplayedEvent['impact']>() ? 'Positive' : 'Negative'),
+		filterFn: 'equals',
+		sortingFn: (rowA, rowB) => {
+			if (rowA.original.impact === rowB.original.impact) return 0;
+			return rowA.original.impact ? 1 : -1;
+		}
 	}
 ];
 
