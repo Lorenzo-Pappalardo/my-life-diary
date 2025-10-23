@@ -7,8 +7,11 @@
 	const displayedEvents = data.events.map<DisplayedEvent>((event) => ({
 		title: event.title,
 		context: event.context,
-		date: event.endDate !== null ? `${event.startDate} - ${event.endDate}` : `${event.startDate}`,
-		impact: event.impact ? 'Positive' : 'Negative'
+		period: {
+			start: event.startDate,
+			end: event.endDate
+		},
+		impact: event.impact
 	}));
 </script>
 

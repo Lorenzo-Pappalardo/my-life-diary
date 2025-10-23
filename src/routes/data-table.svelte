@@ -27,12 +27,7 @@
 				<Table.Row>
 					{#each headerGroup.headers as header (header.id)}
 						<Table.Head colspan={header.colSpan}>
-							{#if !header.isPlaceholder}
-								<FlexRender
-									content={header.column.columnDef.header}
-									context={header.getContext()}
-								/>
-							{/if}
+							<FlexRender content={header.column.columnDef.header} context={header.getContext()} />
 						</Table.Head>
 					{/each}
 				</Table.Row>
@@ -40,7 +35,7 @@
 		</Table.Header>
 		<Table.Body>
 			{#each table.getRowModel().rows as row (row.id)}
-				<Table.Row data-state={row.getIsSelected() && 'selected'}>
+				<Table.Row>
 					{#each row.getVisibleCells() as cell (cell.id)}
 						<Table.Cell>
 							<FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />

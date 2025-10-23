@@ -11,18 +11,37 @@ export const columns: ColumnDef<DisplayedEvent>[] = [
 		header: 'Context'
 	},
 	{
-		accessorKey: 'date',
-		header: 'Date'
+		header: 'Period',
+		accessorFn: row => row.period.start.getTime(),
+		cell: cell => {
+			const formatter = new Intl.DateTimeFormat(undefined, {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit'
+			});
+
+			const { start: startDate, end: endDate } = cell.row.original.period;
+
+			let formatted: string = formatter.format(startDate);
+
+			if (endDate !== null) formatted += ` - ${formatter.format(endDate)}`;
+
+			return formatted;
+		}
 	},
 	{
 		accessorKey: 'impact',
-		header: 'Impact'
+		header: 'Impact',
+		cell: cell => (cell.getValue<DisplayedEvent['impact']>() ? 'Positive' : 'Negative')
 	}
 ];
 
 export interface DisplayedEvent {
 	title: Event['title'];
 	context: Event['context'];
-	date: string;
-	impact: 'Positive' | 'Negative';
+	period: {
+		start: Event['startDate'];
+		end: Event['endDate'];
+	};
+	impact: Event['impact'];
 }
