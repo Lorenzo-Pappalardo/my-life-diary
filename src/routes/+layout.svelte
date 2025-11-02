@@ -11,7 +11,7 @@
 </svelte:head>
 
 <header class="p-0 pb-4 flex items-baseline gap-2">
-	<Button href="/" variant="link" class="p-0 text-4xl mr-2">My life</Button>
+	<Button href="/" variant="link" class="p-0 text-4xl mr-2">My life diary</Button>
 	<div class="flex-[1_0] flex justify-end">
 		<Button href="/create" variant="link" class="p-0">Create event</Button>
 	</div>
