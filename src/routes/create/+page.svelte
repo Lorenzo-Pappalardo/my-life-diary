@@ -1,52 +1,77 @@
 <script lang="ts">
+	import * as Form from '$lib/components/ui/form';
+	import { Input } from '$lib/components/ui/input';
+	import * as NativeSelect from '$lib/components/ui/native-select';
+	import { Textarea } from '$lib/components/ui/textarea';
 	import { superForm } from 'sveltekit-superforms';
 
 	const { data } = $props();
-	const { form: formData, enhance } = superForm(data.form);
+	const form = superForm(data.form);
+	const { form: formData, enhance } = form;
 </script>
 
 <form method="POST" use:enhance>
 	<div id="metadata-group">
-		<div>
-			<label for="title">Title</label>
-			<input id="title" type="text" name="title" min="3" max="300" bind:value={$formData.title} />
-		</div>
+		<Form.Field {form} name="title">
+			<Form.Control>
+				<Form.Label>Title</Form.Label>
+				<Input id="title" type="text" name="title" min="3" max="300" bind:value={$formData.title} />
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
 
-		<div>
-			<label for="context">Context</label>
-			<select id="context" name="context" bind:value={$formData.context}>
-				<option value="Life">Life</option>
-				<option value="University">University</option>
-				<option value="Baxenergy">BaxEnergy</option>
-				<option value="Games">Games</option>
-			</select>
-		</div>
+		<Form.Field {form} name="context">
+			<Form.Control>
+				<Form.Label>Context</Form.Label>
+				<NativeSelect.Root id="context" name="context" bind:value={$formData.context}>
+					<NativeSelect.Option value="Life">Life</NativeSelect.Option>
+					<NativeSelect.Option value="University">University</NativeSelect.Option>
+					<NativeSelect.Option value="Baxenergy">BaxEnergy</NativeSelect.Option>
+					<NativeSelect.Option value="Games">Games</NativeSelect.Option>
+				</NativeSelect.Root>
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
 
-		<div>
-			<label for="start">Start date</label>
-			<input id="start" type="date" name="start" bind:value={$formData.start} />
-		</div>
+		<Form.Field {form} name="start">
+			<Form.Control>
+				<Form.Label>Start date</Form.Label>
+				<Input id="start" type="date" name="start" bind:value={$formData.start} />
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
 
-		<div>
-			<label for="end">End date</label>
-			<input id="end" type="date" name="end" bind:value={$formData.end} />
-		</div>
+		<Form.Field {form} name="end">
+			<Form.Control>
+				<Form.Label>End date</Form.Label>
+				<Input id="end" type="date" name="end" bind:value={$formData.end} />
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
 
-		<div>
-			<label for="impact">Impact</label>
-			<select id="impact" name="impact" bind:value={$formData.impact}>
-				<option value={true} selected>Positive</option>
-				<option value={false}>Negative</option>
-			</select>
-		</div>
+		<Form.Field {form} name="context">
+			<Form.Control>
+				<Form.Label>Impact</Form.Label>
+				<NativeSelect.Root id="impact" name="impact" bind:value={$formData.impact}>
+					<NativeSelect.Option value={true} selected>Positive</NativeSelect.Option>
+					<NativeSelect.Option value={false}>Negative</NativeSelect.Option>
+				</NativeSelect.Root>
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
 	</div>
 
 	<div id="description-group">
-		<label for="description">Description</label>
-		<textarea id="description" name="description" rows="10" bind:value={$formData.description}></textarea>
+		<Form.Field {form} name="description">
+			<Form.Control>
+				<Form.Label>Description</Form.Label>
+				<Textarea id="description" name="description" rows={10} bind:value={$formData.description}></Textarea>
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
 	</div>
 
-	<button>Save</button>
+	<Form.Button>Save</Form.Button>
 </form>
 
 <style>
@@ -56,35 +81,18 @@
 			'metadata'
 			'description'
 			'save';
-		gap: 16px;
 
 		div#metadata-group {
 			grid-area: metadata;
+			display: grid;
+			grid-template-columns: 3fr repeat(4, 1fr);
+			gap: 16px;
 		}
 
 		div#description-group {
 			grid-area: description;
-		}
-
-		div#metadata-group {
-			display: grid;
-			grid-template-columns: 3fr repeat(4, 1fr);
-			gap: 16px;
-
-			> div {
-				display: flex;
-				flex-direction: column;
-			}
-		}
-
-		div#description-group {
 			display: flex;
 			flex-direction: column;
-		}
-
-		button {
-			grid-area: save;
-			justify-self: end;
 		}
 	}
 </style>
