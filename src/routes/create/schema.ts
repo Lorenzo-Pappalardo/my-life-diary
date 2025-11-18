@@ -7,8 +7,8 @@ export const defaults = {
 };
 
 export const formSchema = z.object({
-	title: z.string().min(defaults.titleMinCharacters).max(defaults.titleMaxCharacters).optional(),
-	description: z.string(),
+	title: z.string().min(defaults.titleMinCharacters).max(defaults.titleMaxCharacters),
+	description: z.string().optional(),
 	context: z.string(),
 	start: z.preprocess((value: string) => new Date(value), z.date()),
 	end: z.preprocess((value: string) => new Date(value), z.date()).optional(),
