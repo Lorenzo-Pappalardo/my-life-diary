@@ -4,7 +4,7 @@
 
 	const { data } = $props();
 
-	const displayedEvents = data.events.map<DisplayedEvent>((event) => ({
+	const displayedEvents = data.events.map<DisplayedEvent>(event => ({
 		title: event.title,
 		context: event.context,
 		period: {
