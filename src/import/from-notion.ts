@@ -1,8 +1,9 @@
 import { createReadStream, existsSync, mkdirSync, readdir, writeFile } from 'node:fs';
 import { createInterface } from 'node:readline';
 
-const regexp = /:\s(.*)$/;
 const resultDirectory = 'src/generated/import';
+const resultFilename = 'events.json';
+const regexp = /:\s(.*)$/;
 
 let result = 0;
 
@@ -97,15 +98,40 @@ const dumpFailures = (failureReasons: unknown[]): Promise<void> => {
 	});
 };
 
-const mapToEvent = (lines: readonly string[]): unknown => {
-	const dates = regexp.exec(lines[3])?.[1]?.split('-');
+const mapToEvent = (lines: readonly string[], failedFiles: unknown[]): unknown => {
+	let failedToParse = false;
+
+	const dates = regexp
+		.exec(lines[3])?.[1]
+		?.split('-')
+		.map(date => {
+			const trimmed = date.trim();
+			const parts = trimmed.split('/');
+
+			if (parts.length < 3) {
+				failedToParse = true;
+				return;
+			}
+
+			const day = parts[0];
+			const month = parts[1];
+			const year = parts[2];
+			const standardDate = new Date(`${month}/${day}/${year}`);
+			standardDate.setHours(10);
+			return standardDate.toISOString();
+		});
+
+	if (failedToParse) {
+		failedFiles.push(lines);
+		return undefined;
+	}
 
 	return {
 		title: lines[0].substring(2),
 		description: lines[6],
 		context: regexp.exec(lines[2])?.[1],
-		startDate: dates?.[0]?.trim(),
-		endDate: dates?.[1]?.trim(),
+		startDate: dates?.[0],
+		endDate: dates?.[1],
 		impact: regexp.exec(lines[4])?.[1]
 	};
 };
@@ -116,7 +142,7 @@ const writeEventsToFile = (events: unknown[]): Promise<void> => {
 	checkOrCreateResultDirectory();
 
 	return new Promise((resolve, reject) => {
-		writeFile(`${resultDirectory}/events.json`, JSON.stringify(events), error => {
+		writeFile(`${resultDirectory}/${resultFilename}`, JSON.stringify(events), error => {
 			if (error === null) {
 				console.log('Finished writing events to file.');
 				resolve();
@@ -134,7 +160,13 @@ const main = async () => {
 		const files = await readFiles(path);
 		const linesByFile = await processFiles(path, files);
 		const { successfulFiles, failedFiles } = separateSuccessFromFailure(linesByFile);
-		const events = successfulFiles.map(lines => mapToEvent(lines));
+
+		const events = [];
+		for (const lines of successfulFiles) {
+			const event = mapToEvent(lines, failedFiles);
+			if (event !== undefined) events.push(event);
+		}
+
 		await Promise.allSettled([dumpFailures(failedFiles), writeEventsToFile(events)]);
 	} catch (error) {
 		console.error(error);
