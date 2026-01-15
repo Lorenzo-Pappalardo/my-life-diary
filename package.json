@@ -16,7 +16,8 @@
 		"prisma:db:push": "prisma db push",
 		"prisma:migrate:dev": "prisma migrate dev",
 		"prisma:generate": "prisma generate",
-		"import:notion": "tsc --project ./src/import/tsconfig.json && node ./src/import/from-notion.js"
+		"import:generate": "tsc --project ./src/import/tsconfig.json && node ./src/import/from-notion.js",
+		"import:write": "powershell -c \"Invoke-WebRequest -Method Post http://localhost:5173/import\""
 	},
 	"dependencies": {
 		"@prisma/client": "^6.17.1",
