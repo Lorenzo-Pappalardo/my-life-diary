@@ -28,7 +28,7 @@
 	});
 </script>
 
-<div class="rounded-md border overflow-auto">
+<div class="overflow-auto rounded-md border">
 	<Table.Root>
 		<Table.Header>
 			{#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
