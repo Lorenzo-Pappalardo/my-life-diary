@@ -1,9 +1,9 @@
 <script lang="ts">
+	import DataTable from '$lib/components/custom/data-table.svelte';
+	import EditButton from '$lib/components/custom/edit-button.svelte';
 	import { renderComponent } from '$lib/components/ui/data-table';
 	import type { ColumnDef } from '@tanstack/table-core';
 	import type { Event } from '../generated/prisma/browser';
-	import DataTable from './data-table.svelte';
-	import EditButton from './edit-button.svelte';
 
 	const { data } = $props();
 
