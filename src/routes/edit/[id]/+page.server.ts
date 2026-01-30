@@ -30,7 +30,7 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions = {
-	default: async ({ request, params }) => {
+	update: async ({ request, params }) => {
 		const form = await superValidate(request, zod4(formSchema));
 
 		if (!form.valid) {
@@ -53,6 +53,19 @@ export const actions = {
 			});
 		} catch {
 			return fail(500, { form });
+		}
+
+		redirect(303, '/');
+	},
+	delete: async ({ params }) => {
+		try {
+			await prisma.event.delete({
+				where: {
+					id: Number(params.id)
+				}
+			});
+		} catch (error) {
+			return fail(500, { error });
 		}
 
 		redirect(303, '/');

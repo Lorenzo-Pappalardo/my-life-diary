@@ -5,7 +5,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { superForm } from 'sveltekit-superforms';
 
-	const { data } = $props();
+	const { children, data } = $props();
 	const form = superForm(data.form);
 	const { form: formData, enhance } = form;
 </script>
@@ -15,7 +15,7 @@
 		<Form.Field {form} name="title">
 			<Form.Control>
 				<Form.Label>Title</Form.Label>
-				<Input id="title" type="text" name="title" min="3" max="300" bind:value={$formData.title} />
+				<Input id="title" type="text" name="title" min="3" max="500" bind:value={$formData.title} />
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
@@ -71,7 +71,7 @@
 		</Form.Field>
 	</div>
 
-	<Form.Button class="w-fit">Save</Form.Button>
+	{@render children?.()}
 </form>
 
 <style>
