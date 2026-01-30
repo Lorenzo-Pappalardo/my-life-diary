@@ -45,7 +45,7 @@
 			{#each table.getRowModel().rows as row (row.id)}
 				<Table.Row>
 					{#each row.getVisibleCells() as cell (cell.id)}
-						<Table.Cell>
+						<Table.Cell class={cell.column.columnDef.header === 'Title' ? 'whitespace-normal' : undefined}>
 							<FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
 						</Table.Cell>
 					{/each}

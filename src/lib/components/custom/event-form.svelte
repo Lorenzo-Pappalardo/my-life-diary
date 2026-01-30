@@ -71,7 +71,7 @@
 		</Form.Field>
 	</div>
 
-	<Form.Button>Save</Form.Button>
+	<Form.Button class="w-fit">Save</Form.Button>
 </form>
 
 <style>
@@ -79,8 +79,7 @@
 		display: grid;
 		grid-template-areas:
 			'metadata'
-			'description'
-			'save';
+			'description';
 
 		div#metadata-group {
 			grid-area: metadata;

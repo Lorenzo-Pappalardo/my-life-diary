@@ -4,8 +4,6 @@
 	import '../app.css';
 
 	let { children } = $props();
-
-	const uploadCallback = () => {};
 </script>
 
 <svelte:head>
@@ -29,7 +27,6 @@
 		grid-template-areas:
 			'header'
 			'main';
-		height: 100%;
 
 		> header {
 			grid-area: header;
