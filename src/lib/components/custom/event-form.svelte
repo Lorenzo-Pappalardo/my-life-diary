@@ -10,7 +10,7 @@
 	const { form: formData, enhance } = form;
 </script>
 
-<form method="POST" use:enhance>
+<form class="h-fit" method="POST" use:enhance>
 	<div id="metadata-group">
 		<Form.Field {form} name="title">
 			<Form.Control>
@@ -80,6 +80,7 @@
 		grid-template-areas:
 			'metadata'
 			'description';
+		grid-template-rows: min-content;
 
 		div#metadata-group {
 			grid-area: metadata;
