@@ -2,6 +2,7 @@
 	import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table/index';
 	import * as Table from '$lib/components/ui/table/index';
 	import { type ColumnDef, getCoreRowModel, getFilteredRowModel, getSortedRowModel } from '@tanstack/table-core';
+	import type { Event } from '../../../generated/prisma/client';
 
 	const {
 		columns,
@@ -26,6 +27,27 @@
 			]
 		}
 	});
+
+	const getCellClass = (columnTitle?: string, value?: unknown): undefined | string => {
+		if (columnTitle === undefined) return undefined;
+
+		let classes: string[] = [];
+
+		switch (columnTitle) {
+			case 'Title':
+				classes.push('whitespace-normal');
+				break;
+			case 'Impact':
+				classes.push(`text-[#${getImpactStyle(value as Event['impact'])}]`);
+				break;
+		}
+
+		return classes.join(' ');
+	};
+
+	const getImpactStyle = (isPositive: Event['impact']) => {
+		return isPositive ? '18ff18' : 'ff1818';
+	};
 </script>
 
 <div class="overflow-auto rounded-md border">
@@ -45,7 +67,7 @@
 			{#each table.getRowModel().rows as row (row.id)}
 				<Table.Row>
 					{#each row.getVisibleCells() as cell (cell.id)}
-						<Table.Cell class={cell.column.columnDef.header === 'Title' ? 'whitespace-normal' : undefined}>
+						<Table.Cell class={getCellClass(cell.column.columnDef.header as string, cell.getValue())}>
 							<FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
 						</Table.Cell>
 					{/each}
