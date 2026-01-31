@@ -35,8 +35,9 @@
 				<NativeSelect.Root id="context" name="context" bind:value={$formData.context}>
 					<NativeSelect.Option value="Life">Life</NativeSelect.Option>
 					<NativeSelect.Option value="University">University</NativeSelect.Option>
-					<NativeSelect.Option value="Baxenergy">BaxEnergy</NativeSelect.Option>
 					<NativeSelect.Option value="Games">Games</NativeSelect.Option>
+					<NativeSelect.Option value="Baxenergy">BaxEnergy</NativeSelect.Option>
+					<NativeSelect.Option value="Tricentis">Tricentis</NativeSelect.Option>
 				</NativeSelect.Root>
 			</Form.Control>
 			<Form.FieldErrors />
