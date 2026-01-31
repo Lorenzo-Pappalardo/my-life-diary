@@ -10,8 +10,8 @@ export const formSchema = z.object({
 	title: z.string().min(defaults.titleMinCharacters).max(defaults.titleMaxCharacters),
 	description: z.string().optional().nullable(),
 	context: z.string(),
-	start: z.preprocess((value: string) => new Date(value), z.date()),
-	end: z.preprocess((value: string) => new Date(value), z.date()).optional(),
+	start: z.date(),
+	end: z.date().optional().nullable(),
 	impact: z.boolean().default(defaults.impact)
 });
 

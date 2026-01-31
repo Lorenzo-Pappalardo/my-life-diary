@@ -2,7 +2,7 @@ import prisma from '$lib/prisma';
 import { readFileSync } from 'node:fs';
 import type { RequestHandler } from './$types';
 
-export const POST: RequestHandler = async ({ request }): Promise<Response> => {
+export const POST: RequestHandler = async (): Promise<Response> => {
 	const records = (
 		JSON.parse(readFileSync('src/generated/import/events.json', 'utf8')) as {
 			title: string;

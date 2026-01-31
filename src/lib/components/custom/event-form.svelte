@@ -8,6 +8,15 @@
 	const { children, data } = $props();
 	const form = superForm(data.form);
 	const { form: formData, enhance } = form;
+
+	const getFormattedDate = (rawDate: null | Date): undefined | string => {
+		if (!rawDate) return undefined;
+
+		const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'numeric', day: 'numeric' });
+
+		const { 0: day, 2: month, 4: year } = dateFormat.formatToParts(rawDate);
+		return `${year.value}-${month.value}-${day.value}`;
+	};
 </script>
 
 <form class="h-fit" method="POST" use:enhance>
@@ -36,7 +45,16 @@
 		<Form.Field {form} name="start">
 			<Form.Control>
 				<Form.Label>Start date</Form.Label>
-				<Input id="start" type="date" name="start" bind:value={$formData.start} />
+				<Input
+					id="start"
+					type="date"
+					name="start"
+					bind:value={
+						() => getFormattedDate($formData.start),
+						newDate => {
+							$formData.start = newDate;
+						}
+					} />
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
@@ -44,7 +62,16 @@
 		<Form.Field {form} name="end">
 			<Form.Control>
 				<Form.Label>End date</Form.Label>
-				<Input id="end" type="date" name="end" bind:value={$formData.end} />
+				<Input
+					id="end"
+					type="date"
+					name="end"
+					bind:value={
+						() => getFormattedDate($formData.end),
+						newDate => {
+							$formData.end = newDate;
+						}
+					} />
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
