@@ -19,6 +19,10 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - 5432:5432
+    volumes:
+      - type: bind
+        source: ./backups
+        target: /home/backups
 
   adminer:
     container_name: adminer

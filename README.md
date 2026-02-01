@@ -1,38 +1,14 @@
-# sv
+# MyLife: Personal logbook of experiences
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Get started
 
-## Creating a project
+1. Run `docker compose up -d` to spin up an instance of PostgresDB and another of Adminer.
+2. Install dependencies with `pnpm i`.
+3. Start the development server with `pnpm dev`.
+4. (Optional) Synchronise the database with the generated Prisma schema with `pnpm prisma:db:push`.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Export data to CSV
 
-```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+1. Get a shell into postgres pod with `docker exec -it postgres /bin/sh`.
+2. Log into PostgresDB with `psql -h localhost -p 5432 -d mylife -U POSTGRES_USER`.
+3. Run `\copy (select * from "Event") to '/home/backups/export-YYYY-MM-DD.csv' with csv header`.
