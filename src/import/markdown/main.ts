@@ -2,7 +2,6 @@ import { createReadStream, existsSync, mkdirSync, readdir, writeFile } from 'nod
 import { createInterface } from 'node:readline';
 
 const resultDirectory = 'src/generated/import';
-const resultFilename = 'events.json';
 const regexp = /:\s(.*)$/;
 
 let result = 0;
@@ -142,15 +141,21 @@ const writeEventsToFile = (events: unknown[]): Promise<void> => {
 	checkOrCreateResultDirectory();
 
 	return new Promise((resolve, reject) => {
-		writeFile(`${resultDirectory}/${resultFilename}`, JSON.stringify(events), error => {
-			if (error === null) {
-				console.log('Finished writing events to file.');
-				resolve();
-			} else {
-				console.error(error);
-				reject(error);
+		const today = new Date();
+
+		writeFile(
+			`${resultDirectory}/from_markdown-${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}.json`,
+			JSON.stringify(events),
+			error => {
+				if (error === null) {
+					console.log('Finished writing events to file.');
+					resolve();
+				} else {
+					console.error(error);
+					reject(error);
+				}
 			}
-		});
+		);
 	});
 };
 
