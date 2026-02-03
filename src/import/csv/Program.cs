@@ -1,7 +1,7 @@
 ﻿try
 {
     Console.WriteLine("Path to files to import:");
-    string? path = args[0] ?? Console.ReadLine();
+    string? path = args.Length > 0 ? args[0] : Console.ReadLine();
 
     if (!File.Exists(path))
     {

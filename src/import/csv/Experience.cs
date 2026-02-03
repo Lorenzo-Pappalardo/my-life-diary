@@ -1,11 +1,11 @@
 internal class Experience
 {
-    internal required string Title { get; init; }
-    internal required string? Description { get; init; }
-    internal required string Context { get; init; }
-    internal required string Impact { get; init; }
-    internal required string StartDate { get; init; }
-    internal required string? EndDate { get; init; }
+    public required string Title { get; init; }
+    public required string? Description { get; init; }
+    public required string Context { get; init; }
+    public required string Impact { get; init; }
+    public required string StartDate { get; init; }
+    public required string? EndDate { get; init; }
 
     public override string ToString()
     {
