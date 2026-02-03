@@ -25,8 +25,7 @@ internal partial class Parser
             if (matches.Success)
             {
                 var content = matches.Groups["content"].Value;
-                var dates = matches.Groups["dates"].Value;
-                var splits = dates.Split(" - ");
+                var dates = matches.Groups["dates"].Value.Split(" - ");
 
                 var e = new Experience()
                 {
@@ -34,8 +33,8 @@ internal partial class Parser
                     Description = content,
                     Context = matches.Groups["context"].Value,
                     Impact = matches.Groups["impact"].Value,
-                    StartDate = splits[0],
-                    EndDate = splits.Length > 1 ? splits[1] : null
+                    StartDate = dates[0],
+                    EndDate = dates.Length > 1 ? dates[1] : null
                 };
 
                 Console.WriteLine(e);
