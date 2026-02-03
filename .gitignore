@@ -1,4 +1,9 @@
+# Node
 node_modules
+
+# .NET
+bin/
+obj/
 
 # Output
 .output
@@ -22,6 +27,6 @@ Thumbs.db
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# Custom
 src/generated/*
-src/import/*.js
 backups/
