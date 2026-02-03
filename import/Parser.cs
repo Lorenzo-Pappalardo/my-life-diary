@@ -2,6 +2,8 @@ using System.Text.RegularExpressions;
 
 internal partial class Parser
 {
+    private const int MaxTitleLength = 100;
+
     [GeneratedRegex("^\"?(?<content>.*)\"?(?:,(?<context>[^\",]+),(?<impact>[^\",]+),(?<dates>[^\",]+))$", RegexOptions.IgnoreCase)]
     private static partial Regex ComplexInput();
 
@@ -28,7 +30,7 @@ internal partial class Parser
 
                 var e = new Experience()
                 {
-                    Title = content[..Math.Min(100, content.Length)],
+                    Title = content[..Math.Min(MaxTitleLength, content.Length)],
                     Description = content,
                     Context = matches.Groups["context"].Value,
                     Impact = matches.Groups["impact"].Value,
