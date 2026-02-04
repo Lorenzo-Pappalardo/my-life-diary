@@ -16,8 +16,7 @@
 		"prisma:db:push": "prisma db push",
 		"prisma:migrate:dev": "prisma migrate dev",
 		"prisma:generate": "prisma generate",
-		"import:generate": "tsc --project ./src/import/markdown/tsconfig.json && node ./src/import/markdown/main.js",
-		"import:write": "powershell -c \"Invoke-WebRequest -UseBasicParsing -Method Post http://localhost:5173/import\""
+		"import:generate": "tsc --project ./src/import/markdown/tsconfig.json && node ./src/import/markdown/main.js"
 	},
 	"dependencies": {
 		"@prisma/client": "^6.17.1",

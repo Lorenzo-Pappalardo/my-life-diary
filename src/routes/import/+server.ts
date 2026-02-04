@@ -1,10 +1,16 @@
 import prisma from '$lib/prisma';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import type { RequestHandler } from './$types';
+import { error } from '@sveltejs/kit';
 
-export const POST: RequestHandler = async (): Promise<Response> => {
+export const POST: RequestHandler = async ({ request }): Promise<Response> => {
+	const importFileName = await request.text();
+	const fullPathFileName = `src/generated/import/${importFileName}`;
+
+	if (!existsSync(fullPathFileName)) error(404, 'Not found');
+
 	const records = (
-		JSON.parse(readFileSync('src/generated/import/events.json', 'utf8')) as {
+		JSON.parse(readFileSync(fullPathFileName, 'utf8')) as {
 			title: string;
 			description?: string;
 			context: string;
