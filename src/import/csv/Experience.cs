@@ -4,8 +4,8 @@ internal class Experience
     public required string? Description { get; init; }
     public required string Context { get; init; }
     public required string Impact { get; init; }
-    public required string StartDate { get; init; }
-    public required string? EndDate { get; init; }
+    public required DateTime StartDate { get; init; }
+    public required DateTime? EndDate { get; init; }
 
     public override string ToString()
     {

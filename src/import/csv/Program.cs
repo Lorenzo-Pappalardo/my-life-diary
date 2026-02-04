@@ -16,6 +16,7 @@
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.Error.WriteLine(error);
+        Console.ResetColor();
     }
 
     return errors.Count > 0 ? 1 : 0;

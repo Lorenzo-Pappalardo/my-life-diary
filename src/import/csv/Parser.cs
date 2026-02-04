@@ -52,8 +52,8 @@ internal partial class Parser
                             Description = content,
                             Context = matches.Groups["context"].Value,
                             Impact = matches.Groups["impact"].Value,
-                            StartDate = dates[0],
-                            EndDate = dates.Length > 1 ? dates[1] : null
+                            StartDate = ParseUTC(dates[0]),
+                            EndDate = dates.Length > 1 ? ParseUTC(dates[1]) : null
                         }
                     );
                 }
@@ -69,5 +69,11 @@ internal partial class Parser
         await JsonSerializer.SerializeAsync(outputFile, experiences, jsonSerializerOptions);
 
         return errors;
+    }
+
+    private static DateTime ParseUTC(string possibleDate)
+    {
+        // From DD/MM/YYYY to YYYY-MM-DDT00:00:00Z
+        return DateTime.Parse($"{string.Join("-", possibleDate.Split('/').Reverse())}T00:00:00Z").ToUniversalTime();
     }
 }
