@@ -9,6 +9,13 @@ internal partial class Parser
     private const int MaxTitleLength = 100;
     private const string outputDirectory = "../../generated/import";
 
+    private readonly JsonSerializerOptions jsonSerializerOptions = new()
+    {
+        IncludeFields = true,
+        WriteIndented = true,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
     private readonly string path;
 
     internal Parser(string path)
@@ -59,11 +66,7 @@ internal partial class Parser
             }
         }
 
-        await JsonSerializer.SerializeAsync(outputFile, experiences, new JsonSerializerOptions()
-        {
-            IncludeFields = true,
-            WriteIndented = true
-        });
+        await JsonSerializer.SerializeAsync(outputFile, experiences, jsonSerializerOptions);
 
         return errors;
     }
