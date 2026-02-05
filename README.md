@@ -10,5 +10,5 @@
 ## Export data to CSV
 
 1. Get a shell into postgres pod with `docker exec -it postgres /bin/sh`.
-2. Log into PostgresDB with `psql -h localhost -p 5432 -d mylife -U POSTGRES_USER`.
+2. Log into PostgresDB with `psql -d mylife -U POSTGRES_USER`.
 3. Run `\copy (select * from "Event") to '/home/backups/export-YYYY-MM-DD.csv' with csv header`.
