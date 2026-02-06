@@ -16,7 +16,8 @@
 		"prisma:db:push": "prisma db push",
 		"prisma:migrate:dev": "prisma migrate dev",
 		"prisma:generate": "prisma generate",
-		"import:generate": "tsc --project ./src/import/markdown/tsconfig.json && node ./src/import/markdown/main.js"
+		"import:generate": "tsc --project ./src/import/markdown/tsconfig.json && node ./src/import/markdown/main.js",
+		"export:generate": "tsc --project ./src/routes/export/tsconfig.json"
 	},
 	"dependencies": {
 		"@prisma/client": "^6.17.1",

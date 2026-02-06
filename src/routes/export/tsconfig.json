@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"rootDir": "./",
+		"outDir": "../../generated/export",
+		"strict": true
+	},
+	"exclude": ["+server.ts"]
+}
