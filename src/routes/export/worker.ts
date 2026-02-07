@@ -19,7 +19,7 @@ const main = () => {
 	markdown += `Context: ${event.context}\n`;
 	markdown += `Period: ${dateToString(event.startDate)}${event.endDate !== null ? '-' + dateToString(event.endDate) : ''}\n`;
 	markdown += `Impact: ${event.impact}\n\n`;
-	markdown += event.description;
+	if (event.description !== null) markdown += event.description;
 
 	writeFileSync(`${outputDirectoryName}/${sanitiseTitle(event.title)}.md`, markdown);
 	parentPort?.postMessage(true);
