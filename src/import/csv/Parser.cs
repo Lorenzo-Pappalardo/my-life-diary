@@ -46,6 +46,7 @@ internal partial class Parser
 
                     if (content.ElementAt(content.Length - 1) == '"')
                         content = content[..^1];
+                    content = content.Replace("\"\"", "\"");
 
                     var dates = matches.Groups["dates"].Value.Split(" - ");
 
