@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 internal partial class Parser
 {
-    [GeneratedRegex("^\"?(?<content>.*)\"?(?:,(?<context>[^\",]+),(?<impact>[^\",]+),(?<dates>[^\",]+))$", RegexOptions.IgnoreCase)]
+    [GeneratedRegex("^\"?(?<content>.+),(?<context>[^\"]+),(?<impact>[^\"]+),(?<dates>[^\"]+)$", RegexOptions.IgnoreCase)]
     private static partial Regex ComplexInput();
 
     private const int MaxTitleLength = 100;
@@ -43,6 +43,10 @@ internal partial class Parser
                 if (matches.Success)
                 {
                     var content = matches.Groups["content"].Value;
+
+                    if (content.ElementAt(content.Length - 1) == '"')
+                        content = content[..^1];
+
                     var dates = matches.Groups["dates"].Value.Split(" - ");
 
                     experiences.Add(
