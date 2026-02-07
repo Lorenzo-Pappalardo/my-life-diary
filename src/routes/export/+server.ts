@@ -1,9 +1,9 @@
 import prisma from '$lib/prisma';
 import { error } from '@sveltejs/kit';
 import { existsSync, mkdirSync } from 'node:fs';
+import { Worker } from 'node:worker_threads';
 import type { Event } from '../../generated/prisma/client';
 import type { RequestHandler } from './$types';
-import { Worker } from 'node:worker_threads';
 
 export const GET: RequestHandler = async (): Promise<Response> => {
 	const res = await prisma.event.findMany({
@@ -11,7 +11,7 @@ export const GET: RequestHandler = async (): Promise<Response> => {
 	});
 
 	const today = new Date();
-	const exportDirectoryName = `src/generated/export/export-${today.getUTCFullYear()}_${today.getUTCMonth() + 1}_${today.getUTCDate()}`;
+	const exportDirectoryName = `src/generated/export/export-${today.getUTCFullYear()}-${addPaddingIfNecessary(today.getUTCMonth() + 1)}-${addPaddingIfNecessary(today.getUTCDate())}`;
 
 	if (!existsSync(exportDirectoryName)) mkdirSync(exportDirectoryName, { recursive: true });
 
@@ -27,6 +27,11 @@ export const GET: RequestHandler = async (): Promise<Response> => {
 		});
 
 	return new Response();
+};
+
+const addPaddingIfNecessary = (num: number) => {
+	if (num.toString().length === 1) return '0' + num;
+	return num;
 };
 
 const processEvent = (outputDirectoryName: string, event: Event): Promise<void> => {
