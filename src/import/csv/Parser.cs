@@ -6,7 +6,7 @@ internal partial class Parser
     [GeneratedRegex("^\"?(?<content>.+),(?<context>[^\"]+),(?<impact>[^\"]+),(?<dates>[^\"]+)$", RegexOptions.IgnoreCase)]
     private static partial Regex ComplexInput();
 
-    private const int MaxTitleLength = 100;
+    private const int MaxTitleLength = 97;
     private const string outputDirectory = "../../generated/import";
 
     private readonly JsonSerializerOptions jsonSerializerOptions = new()
@@ -53,8 +53,8 @@ internal partial class Parser
                     experiences.Add(
                         new Experience()
                         {
-                            Title = content[..Math.Min(MaxTitleLength, content.Length)],
-                            Description = content,
+                            Title = content.Length < MaxTitleLength ? content : $"{content[..MaxTitleLength]}...",
+                            Description = content.Length < MaxTitleLength ? null : content,
                             Context = matches.Groups["context"].Value,
                             Impact = matches.Groups["impact"].Value,
                             StartDate = ParseUTC(dates[0]),
