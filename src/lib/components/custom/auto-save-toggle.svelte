@@ -2,7 +2,7 @@
 	import { Toggle } from '$lib/components/ui/toggle/index.js';
 	import { onDestroy } from 'svelte';
 
-	let { defaultValue = $bindable<boolean>(true), callback = $bindable<() => unknown>() } = $props();
+	let { defaultEnabled = $bindable<boolean>(true), callback = $bindable<() => unknown>() } = $props();
 
 	const getPressed = () => {
 		return autoSavingIntervalID !== undefined;
@@ -37,7 +37,7 @@
 
 	let autoSavingIntervalID: undefined | number = $state(undefined);
 
-	if (defaultValue) {
+	if (defaultEnabled) {
 		autoSavingIntervalID = handleAutoSave();
 	}
 
