@@ -11,7 +11,7 @@ export const GET: RequestHandler = async (): Promise<Response> => {
 	});
 
 	const today = new Date();
-	const exportDirectoryName = `src/generated/export/export-${today.getUTCFullYear()}-${addPaddingIfNecessary(today.getUTCMonth() + 1)}-${addPaddingIfNecessary(today.getUTCDate())}`;
+	const exportDirectoryName = `src/generated/export/export-${today.getFullYear()}-${addPaddingIfNecessary(today.getMonth() + 1)}-${addPaddingIfNecessary(today.getDate())}`;
 
 	if (!existsSync(exportDirectoryName)) mkdirSync(exportDirectoryName, { recursive: true });
 
