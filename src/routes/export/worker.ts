@@ -18,7 +18,7 @@ const main = () => {
 	markdown += `# ${event.title}\n\n`;
 	markdown += `Context: ${event.context}\n`;
 	markdown += `Period: ${dateToString(event.startDate)}${event.endDate !== null ? '-' + dateToString(event.endDate) : ''}\n`;
-	markdown += `Impact: ${event.impact}\n\n`;
+	markdown += `Impact: ${event.impact ? 'Positive' : 'Negative'}\n\n`;
 	if (event.description !== null) markdown += event.description;
 
 	writeFileSync(`${outputDirectoryName}/${sanitiseTitle(event.title)}.md`, markdown);
