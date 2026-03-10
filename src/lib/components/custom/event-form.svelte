@@ -93,7 +93,7 @@
 		<Form.Field {form} name="description">
 			<Form.Control>
 				<Form.Label>Description</Form.Label>
-				<Textarea id="description" name="description" rows={10} bind:value={$formData.description}></Textarea>
+				<Textarea id="description" name="description" rows={10} bind:value={$formData.description} autofocus></Textarea>
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>

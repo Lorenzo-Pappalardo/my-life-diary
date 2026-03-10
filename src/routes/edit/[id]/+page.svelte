@@ -8,9 +8,6 @@
 
 	const handleAutoSave = () => {
 		submitButtonRef?.click();
-		setTimeout(() => {
-			document.getElementById('description')?.focus();
-		}, 200);
 	};
 </script>
 
