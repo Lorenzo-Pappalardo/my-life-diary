@@ -1,4 +1,4 @@
-import prisma from '$lib/prisma';
+import { prisma } from '$lib/prisma';
 import { existsSync, readFileSync } from 'node:fs';
 import type { RequestHandler } from './$types';
 import { error } from '@sveltejs/kit';

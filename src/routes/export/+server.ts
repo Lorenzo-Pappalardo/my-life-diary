@@ -1,4 +1,4 @@
-import prisma from '$lib/prisma';
+import { prisma } from '$lib/prisma';
 import { error } from '@sveltejs/kit';
 import { existsSync, mkdirSync } from 'node:fs';
 import { Worker } from 'node:worker_threads';
