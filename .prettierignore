@@ -1,3 +1,13 @@
+node_modules
+.svelte-kit
+dist
+build
+public
+static
+*.log
+*.db
+coverage
+/.github
 # Package Managers
 package-lock.json
 pnpm-lock.yaml

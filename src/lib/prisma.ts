@@ -1,8 +1,12 @@
-import { DATABASE_URL } from '$env/static/private';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../generated/prisma/client';
+import { loadEnvFile } from 'node:process';
 
-const prisma = new PrismaClient({
-	datasourceUrl: DATABASE_URL
-});
+loadEnvFile();
 
-export default prisma;
+const connectionString = `${process.env.DATABASE_URL}`;
+
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
+
+export { prisma };
