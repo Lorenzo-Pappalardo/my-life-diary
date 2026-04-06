@@ -1,4 +1,4 @@
-# MyLife: Personal logbook of experiences
+# MyLifeLogbook
 
 ## Get started
 

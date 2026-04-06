@@ -3,9 +3,12 @@
 	"singleQuote": true,
 	"trailingComma": "none",
 	"printWidth": 130,
-  "arrowParens": "avoid",
-  "bracketSameLine": true,
-	"plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
+	"arrowParens": "avoid",
+	"bracketSameLine": true,
+	"plugins": [
+		"prettier-plugin-svelte",
+		"prettier-plugin-tailwindcss"
+	],
 	"overrides": [
 		{
 			"files": "*.svelte",
