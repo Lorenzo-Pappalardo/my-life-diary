@@ -12,7 +12,7 @@
 
 <div id="app-container">
 	<header class="h-min flex items-baseline gap-2 p-0 pb-4">
-		<Button href="/" variant="link" class="mr-2 p-0 text-4xl">My life diary</Button>
+		<Button href="/" variant="link" class="mr-2 p-0 text-4xl">My life logbook</Button>
 		<div class="flex flex-[1_0] justify-end">
 			<Button href="/create" variant="link" class="p-0">Create event</Button>
 		</div>
