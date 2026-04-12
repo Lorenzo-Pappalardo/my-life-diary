@@ -54,8 +54,6 @@ export const actions = {
 		} catch {
 			return fail(500, { form });
 		}
-
-		// redirect(303, '/');
 	},
 	delete: async ({ params }) => {
 		try {

@@ -1,13 +1,19 @@
 <script lang="ts">
+	import { applyAction, deserialize } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import * as NativeSelect from '$lib/components/ui/native-select';
 	import { Textarea } from '$lib/components/ui/textarea';
+	import type { ActionResult } from '@sveltejs/kit';
 	import { superForm } from 'sveltekit-superforms';
+	import { Toggle } from '../ui/toggle';
 
-	const { children, data } = $props();
+	const { data, isCreate }: { data: any /* Replace with correct type */; isCreate: boolean } = $props();
 	const form = superForm(data.form);
-	const { form: formData, enhance } = form;
+	const { form: formData } = form;
+	let autoSavingIntervalID: undefined | ReturnType<typeof globalThis.setInterval> = $state(undefined);
+	let formRef: undefined | HTMLFormElement = $state(undefined);
 
 	const getFormattedDate = (rawDate: null | Date): undefined | string => {
 		if (!rawDate) return undefined;
@@ -17,9 +23,75 @@
 		const { 0: day, 2: month, 4: year } = dateFormat.formatToParts(rawDate);
 		return `${year.value}-${month.value}-${day.value}`;
 	};
+
+	const getPressed = () => {
+		return autoSavingIntervalID !== undefined;
+	};
+
+	const setPressed = () => {
+		autoSavingIntervalID = handleAutoSave();
+	};
+
+	const handleAutoSave: () => undefined | ReturnType<typeof globalThis.setInterval> = () => {
+		if (autoSavingIntervalID !== undefined) {
+			return disableAutoSave();
+		}
+
+		return enableAutoSave();
+	};
+
+	const enableAutoSave: () => ReturnType<typeof globalThis.setInterval> = () => {
+		const id = globalThis.setInterval(() => {
+			save(undefined, true);
+		}, 30000);
+
+		console.log(`Auto-save enabled (#${id})`);
+		return id;
+	};
+
+	const disableAutoSave: () => undefined = () => {
+		console.log('Auto-save disabled');
+		window.clearInterval(autoSavingIntervalID);
+		return (autoSavingIntervalID = undefined);
+	};
+
+	const save = async (event?: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }, progressive: boolean = false) => {
+		event?.preventDefault();
+
+		let endpoint: string;
+		let data: FormData;
+
+		if (event === undefined) {
+			endpoint = isCreate ? '/create' : `285?/update`;
+			data = new FormData(formRef);
+		} else {
+			endpoint = isCreate ? event.currentTarget.action : `${event.currentTarget.action}?/update`;
+			data = new FormData(event.currentTarget, event.submitter);
+		}
+
+		const response = await fetch(endpoint, {
+			method: 'POST',
+			body: data
+		});
+
+		if (!progressive) {
+			const result: ActionResult = deserialize(await response.text());
+
+			if (result.type === 'success') {
+				// rerun all `load` functions, following the successful update
+				await invalidateAll();
+			}
+
+			applyAction(result);
+		}
+	};
+
+	if (!isCreate)
+		// Auto-saving by default
+		autoSavingIntervalID = handleAutoSave();
 </script>
 
-<form class="h-fit" method="POST" use:enhance>
+<form bind:this={formRef} class="h-fit" method="POST" onsubmit={save}>
 	<div id="metadata-group">
 		<Form.Field {form} name="title">
 			<Form.Control>
@@ -99,7 +171,15 @@
 		</Form.Field>
 	</div>
 
-	{@render children?.()}
+	<div class="flex gap-1">
+		{#if !isCreate}
+			<Toggle bind:pressed={getPressed, setPressed}>Auto save</Toggle>
+		{/if}
+		<Form.Button class="w-fit" formaction={isCreate ? '?/create' : '?/update'}>{isCreate ? 'Create' : 'Update'}</Form.Button>
+		{#if !isCreate}
+			<Form.Button formaction="?/delete" class="w-fit" variant="destructive">Delete</Form.Button>
+		{/if}
+	</div>
 </form>
 
 <style>
