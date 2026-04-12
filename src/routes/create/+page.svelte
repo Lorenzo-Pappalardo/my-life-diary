@@ -4,4 +4,4 @@
 	const { params, data } = $props();
 </script>
 
-<EventForm {params} {data} isCreate={true} />
+<EventForm {data} isCreate={true} />

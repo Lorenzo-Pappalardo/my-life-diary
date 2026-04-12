@@ -8,9 +8,9 @@
 	import type { ActionResult } from '@sveltejs/kit';
 	import { onDestroy, onMount } from 'svelte';
 	import { superForm } from 'sveltekit-superforms';
+	import type { RouteParams } from '../../../routes/edit/[id]/$types';
 
-	const { params, data, isCreate }: { params: { id: number }; data: any /* Replace with correct type */; isCreate: boolean } =
-		$props();
+	const { params, data, isCreate }: { data: { form: any }; isCreate: boolean; params?: RouteParams } = $props();
 	const form = superForm(data.form);
 	const { form: formData } = form;
 	let formRef: undefined | HTMLFormElement = undefined;
@@ -20,7 +20,7 @@
 		const id = globalThis.setInterval(() => {
 			save(
 				{
-					endpoint: `${params.id}?/update`,
+					endpoint: `${params?.id}?/update`,
 					data: new FormData(formRef)
 				},
 				true
