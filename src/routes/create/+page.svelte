@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EventForm from '$lib/components/custom/event-form.svelte';
 
-	const { data } = $props();
+	const { params, data } = $props();
 </script>
 
-<EventForm {data} isCreate={true} />
+<EventForm {params} {data} isCreate={true} />

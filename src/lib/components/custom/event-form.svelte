@@ -6,65 +6,43 @@
 	import * as NativeSelect from '$lib/components/ui/native-select';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import type { ActionResult } from '@sveltejs/kit';
+	import { onDestroy, onMount } from 'svelte';
 	import { superForm } from 'sveltekit-superforms';
-	import { Toggle } from '../ui/toggle';
 
-	const { data, isCreate }: { data: any /* Replace with correct type */; isCreate: boolean } = $props();
+	const { params, data, isCreate }: { params: { id: number }; data: any /* Replace with correct type */; isCreate: boolean } =
+		$props();
 	const form = superForm(data.form);
 	const { form: formData } = form;
-	let autoSavingIntervalID: undefined | ReturnType<typeof globalThis.setInterval> = $state(undefined);
-	let formRef: undefined | HTMLFormElement = $state(undefined);
+	let formRef: undefined | HTMLFormElement = undefined;
+	let autoSavingIntervalID: undefined | ReturnType<typeof globalThis.setInterval>;
 
-	const getFormattedDate = (rawDate: null | Date): undefined | string => {
-		if (!rawDate) return undefined;
-
-		const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'numeric', day: 'numeric' });
-
-		const { 0: day, 2: month, 4: year } = dateFormat.formatToParts(rawDate);
-		return `${year.value}-${month.value}-${day.value}`;
-	};
-
-	const getPressed = () => {
-		return autoSavingIntervalID !== undefined;
-	};
-
-	const setPressed = () => {
-		autoSavingIntervalID = handleAutoSave();
-	};
-
-	const handleAutoSave: () => undefined | ReturnType<typeof globalThis.setInterval> = () => {
-		if (autoSavingIntervalID !== undefined) {
-			return disableAutoSave();
-		}
-
-		return enableAutoSave();
-	};
-
-	const enableAutoSave: () => ReturnType<typeof globalThis.setInterval> = () => {
+	const handleAutoSave: () => ReturnType<typeof globalThis.setInterval> = () => {
 		const id = globalThis.setInterval(() => {
-			save(undefined, true);
+			save(
+				{
+					endpoint: `${params.id}?/update`,
+					data: new FormData(formRef)
+				},
+				true
+			);
 		}, 30000);
 
 		console.log(`Auto-save enabled (#${id})`);
 		return id;
 	};
 
-	const disableAutoSave: () => undefined = () => {
-		console.log('Auto-save disabled');
-		window.clearInterval(autoSavingIntervalID);
-		return (autoSavingIntervalID = undefined);
-	};
-
-	const save = async (event?: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }, progressive: boolean = false) => {
-		event?.preventDefault();
-
+	const save = async (
+		event: FakeEvent | (SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }),
+		progressive: boolean = false
+	) => {
 		let endpoint: string;
 		let data: FormData;
 
-		if (event === undefined) {
-			endpoint = isCreate ? '/create' : `285?/update`;
-			data = new FormData(formRef);
+		if (isFakeEvent(event)) {
+			endpoint = event.endpoint;
+			data = event.data;
 		} else {
+			event.preventDefault();
 			endpoint = isCreate ? event.currentTarget.action : `${event.currentTarget.action}?/update`;
 			data = new FormData(event.currentTarget, event.submitter);
 		}
@@ -86,9 +64,34 @@
 		}
 	};
 
-	if (!isCreate)
-		// Auto-saving by default
-		autoSavingIntervalID = handleAutoSave();
+	const getFormattedDate = (rawDate: null | Date): undefined | string => {
+		if (!rawDate) return undefined;
+
+		const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'numeric', day: 'numeric' });
+
+		const { 0: day, 2: month, 4: year } = dateFormat.formatToParts(rawDate);
+		return `${year.value}-${month.value}-${day.value}`;
+	};
+
+	onMount(() => {
+		if (!isCreate) autoSavingIntervalID = handleAutoSave();
+	});
+
+	onDestroy(() => {
+		if (autoSavingIntervalID !== undefined) {
+			globalThis.clearInterval(autoSavingIntervalID);
+			console.log(`Auto-save disabled (#${autoSavingIntervalID})`);
+		}
+	});
+
+	const isFakeEvent = (event: any): event is FakeEvent => {
+		return Object.hasOwn(event, 'endpoint');
+	};
+
+	interface FakeEvent {
+		endpoint: string;
+		data: FormData;
+	}
 </script>
 
 <form bind:this={formRef} class="h-fit" method="POST" onsubmit={save}>
@@ -172,9 +175,6 @@
 	</div>
 
 	<div class="flex gap-1">
-		{#if !isCreate}
-			<Toggle bind:pressed={getPressed, setPressed}>Auto save</Toggle>
-		{/if}
 		<Form.Button class="w-fit" formaction={isCreate ? '?/create' : '?/update'}>{isCreate ? 'Create' : 'Update'}</Form.Button>
 		{#if !isCreate}
 			<Form.Button formaction="?/delete" class="w-fit" variant="destructive">Delete</Form.Button>
