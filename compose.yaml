@@ -41,3 +41,7 @@ services:
     restart: always
     ports:
       - 4173:4173
+    volumes:
+      - type: bind
+        source: ./src/generated/export
+        target: /app/src/generated/export
