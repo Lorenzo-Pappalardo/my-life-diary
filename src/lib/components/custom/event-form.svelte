@@ -9,7 +9,6 @@
 	import { onDestroy, onMount, untrack } from 'svelte';
 	import { dateProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import type { RouteParams } from '../../../routes/edit/[id]/$types';
-	import type { FormSchema } from '../../../schema';
 
 	const {
 		params,

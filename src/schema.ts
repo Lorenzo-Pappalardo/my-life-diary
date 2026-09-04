@@ -14,5 +14,3 @@ export const formSchema = z.object({
 	end: z.date().optional().nullable(),
 	impact: z.boolean().default(defaults.impact)
 });
-
-export type FormSchema = typeof formSchema;

@@ -21,8 +21,8 @@ export const actions = {
 					title: form.data.title,
 					description: form.data.description,
 					context: form.data.context,
-					startDate: form.data.start,
-					endDate: form.data.end,
+					startDate: extractDateOnly(form.data.start),
+					endDate: form.data.end != undefined ? extractDateOnly(form.data.end) : null,
 					impact: form.data.impact
 				}
 			});
@@ -32,4 +32,8 @@ export const actions = {
 
 		redirect(303, '/');
 	}
+};
+
+const extractDateOnly = (dateTime: Date) => {
+	return dateTime.toISOString().split('T')[0];
 };
