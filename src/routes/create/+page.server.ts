@@ -21,19 +21,16 @@ export const actions = {
 					title: form.data.title,
 					description: form.data.description,
 					context: form.data.context,
-					startDate: extractDateOnly(form.data.start),
-					endDate: form.data.end != undefined ? extractDateOnly(form.data.end) : null,
+					startDate: form.data.start,
+					endDate: form.data.end,
 					impact: form.data.impact
 				}
 			});
-		} catch {
+		} catch (error) {
+			console.error('Failed to create event:', error);
 			return fail(500, { form });
 		}
 
 		redirect(303, '/');
 	}
-};
-
-const extractDateOnly = (dateTime: Date) => {
-	return dateTime.toISOString().split('T')[0];
 };

@@ -14,3 +14,10 @@
 3. Launch the desired operation.
    1. Export: `\copy (select * from "Event") to '/home/backups/export-YYYY-MM-DD.csv' with csv header`.
    2. Import: `\copy "Event"(id, title, description, context, "startDate", "endDate", impact, "createdAt", "updatedAt") FROM '/home/imports/import.csv' delimiter ',' csv header`.
+      After restoring the data, it is necessary to patch the value of the next id for the sequence:
+      ```sql
+      SELECT setval(
+      pg_get_serial_sequence('"Event"', 'id'),
+      COALESCE((SELECT MAX(id) FROM "Event"), 0)
+      );
+      ```
